@@ -10,8 +10,6 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 
-
-
 app.use(studentRoutes,teacherRoutes);
 
 app.listen(process.env.PORT,(req,res)=>{
