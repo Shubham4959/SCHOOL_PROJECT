@@ -14,6 +14,8 @@ app.use(express.json());
 
 app.use("/students",studentRoutes)
 app.use("/teachers",teacherRoutes)
+app.use(classRoutes)
+app.use(subjectRoutes)
 
 app.listen(process.env.PORT,(req,res)=>{
     console.log("Listening to port " + process.env.PORT);

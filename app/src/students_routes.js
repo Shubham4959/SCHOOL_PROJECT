@@ -3,8 +3,6 @@ const router = express.Router();
 const mongoose=require('mongoose')
 const jwt = require('jsonwebtoken');
 const Studentmodel = require('../models/students_schema');
-const Classmodel = require('../models/class_schema');
-const Subjectmodel = require('../models/subject_schema');
 const {jwtAuthMiddleware,generateToken}=require("../../controllers/auth");
 
 
