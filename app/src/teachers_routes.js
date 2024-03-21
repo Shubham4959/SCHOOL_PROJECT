@@ -23,7 +23,7 @@ router.post('/teachers/register', async (req, res) => {
             SubjectIds
         }).save();
         if (teacher) {
-            res.json({ status: true, code: 200, teacher: teacher, message: 'Teacher Registered Successfully' });
+            res.json({ status: true, code: 200, message: 'Teacher Registered Successfully',Data:teacher});
         } else {
             res.json({ status: false, code: 200, message: 'Teacher Not Registered ' });
         }
@@ -51,7 +51,7 @@ router.post('/teachers/login', async (req, res) => {
         }
         const token = generateToken(payload)
         if (token) {
-            res.json({ status: true, code: 200, message: "Token Generated Succesfully", token: token });
+            res.json({ status: true, code: 200, message: "Teacher login Succesfully", token: token });
         }
 
     } catch (error) {
@@ -68,7 +68,7 @@ router.get("/teachers/profile", jwtAuthMiddleware, async (req, res) => {
 
         const teacher = await Teachermodel.findById(teacherId)
         if (teacher) {
-            res.json({ status: true, code: 200, Teacher: teacher, message: "Teacher Found Succcesfully" })
+            res.json({ status: true, code: 200, message: "Teacher Found Succcesfully",Data:teacher })
         } else {
             res.json({ status: false, code: 500, message: "Teacher Not Found " })
         }
@@ -87,7 +87,7 @@ router.get("/getTeachers", jwtAuthMiddleware, async (req, res) => {
     try {
         const teachers = await Teachermodel.find()
         if (teachers) {
-            res.json({ status: true, code: 200, Teachers: teachers, message: "Teachers Found Succcesfully" })
+            res.json({ status: true, code: 200, message: "Teachers Found Succcesfully" ,Data:teachers})
         } else {
             res.json({ status: false, code: 500, message: "Teacher Not Found " })
         }
@@ -100,13 +100,13 @@ router.get("/getTeachers", jwtAuthMiddleware, async (req, res) => {
 })
 
 
-router.post("/teachers/update", jwtAuthMiddleware, async (req, res) => {
+router.post("/teachers/update/:id", jwtAuthMiddleware, async (req, res) => {
 
     try {
-        const teacherId = req.user.id;
-        const updateTeacher = await Teachermodel.findByIdAndUpdate(teacherId, { $set: req.body }, { new: true })
+        
+        const updateTeacher = await Teachermodel.findByIdAndUpdate({_id:req.params.id}, { $set: req.body }, { new: true })
         if (updateTeacher) {
-            res.json({ status: true, code: 200, Teacher: updateTeacher, message: "Teacher Updated Succcesfully" })
+            res.json({ status: true, code: 200, message: "Teacher Updated Succcesfully",Data:updateTeacher })
         } else {
             res.json({ status: false, code: 200, message: "Teacher Not Updated " })
         }
@@ -118,11 +118,10 @@ router.post("/teachers/update", jwtAuthMiddleware, async (req, res) => {
 })
 
 
-router.delete("/teachers/delete", jwtAuthMiddleware, async (req, res) => {
+router.delete("/teachers/delete/:id", jwtAuthMiddleware, async (req, res) => {
 
     try {
-        const teacherId = req.user.id;
-        const deleteTeacher = await Teachermodel.findByIdAndDelete(teacherId)
+        const deleteTeacher = await Teachermodel.findByIdAndDelete(req.params.id)
         if (deleteTeacher) {
             res.json({ status: true, code: 200, message: "Teacher deleted Succcesfully" })
         } else {
@@ -141,7 +140,7 @@ router.get("/getTeacherDetails/:id", jwtAuthMiddleware, async (req, res) => {
 
     try {
         
-        const student = await Teachermodel.aggregate([
+        const teacher = await Teachermodel.aggregate([
 
             { $match: { _id:  new mongoose.Types.ObjectId(req.params.id) } },
 
@@ -175,8 +174,8 @@ router.get("/getTeacherDetails/:id", jwtAuthMiddleware, async (req, res) => {
             }
 
         ])
-        if (student) {
-            res.json({ status: true, code: 200, Data: student, message: "Teacher Found Succcesfully" })
+        if (teacher) {
+            res.json({ status: true, code: 200, message: "Teacher Found Succcesfully",Data:teacher })
         } else {
             res.json({ status: false, code: 500, message: "Teacher Not Found" })
         }

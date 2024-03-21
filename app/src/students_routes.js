@@ -21,7 +21,7 @@ router.post('/students/register', async (req, res) => {
                 SubjectIds
             }).save();
            if(student){
-            res.json({ status:true,code:200,Student:student,message: 'Student Registered Successfully'});
+            res.json({ status:true,code:200,message: 'Student Registered Successfully',Data:student});
            }else{
             res.json({ status:false,code:200,message: 'Student Not Registered ' });
            }
@@ -45,11 +45,10 @@ router.post('/students/login', async (req, res) => {
         }
         const payload={
             id:student.id,
-            Email:student.Email
         }
         const token= generateToken(payload)
         if(token){
-            res.json({status:true,code:200,message:"Token Generated Succesfully",token:token });
+            res.json({status:true,code:200,message:"Student Login Succesfully",token:token });
         }
        
     } catch (error) {
@@ -67,7 +66,7 @@ router.post('/class', async (req, res) => {
         }).save();
 
         if(newClass){
-            res.json({status:true,code:200,Class:Class,message: 'Class Created Successfully'});  
+            res.json({status:true,code:200,message: 'Class Created Successfully',Data:newClass});  
         }else{
             res.json({status:false,code:200, message: 'Subject Not Created '});
         }
@@ -87,7 +86,7 @@ router.post('/subject', async (req, res) => {
         }).save();
 
         if(newSubject){
-            res.json({status:true,code:200,Subject:Subject,message: 'Subject Created Successfully'});
+            res.json({status:true,code:200,Subject:Subject,message: 'Subject Created Successfully',Data:newSubject});
         }else{
             res.json({status:false,code:200, message: 'Subject Not Created '});
         }
@@ -107,7 +106,7 @@ router.get("/students/profile",jwtAuthMiddleware,async(req,res)=>
     
         const student=await Studentmodel.findById(studentId)
         if(student){
-            res.json({status:true,code:200,Student:student,message:"Student Found Succcesfully"})
+            res.json({status:true,code:200,message:"Student Found Succcesfully",Data:student})
         }
 
     }catch(error){
@@ -124,7 +123,7 @@ router.get("/getStudents",jwtAuthMiddleware,async(req,res)=>
     try{
         const Students=await Studentmodel.find();
         if(Students){
-            res.json({status:true,code:200,Students:Students,message:"Students Found Succcesfully"})
+            res.json({status:true,code:200,message:"Students Found Succcesfully",Data:Students})
         }
 
     }catch(error){
@@ -136,16 +135,12 @@ router.get("/getStudents",jwtAuthMiddleware,async(req,res)=>
 
 
 
-
-
-
-router.post("/students/update",jwtAuthMiddleware,async(req,res)=>{
+router.post("/students/update/:id",jwtAuthMiddleware,async(req,res)=>{
       
     try{
-      const studentId = req.user.id;
-      const updateStudent=await Studentmodel.findByIdAndUpdate(studentId,{$set:req.body},{new:true})
+      const updateStudent=await Studentmodel.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true})
       if(updateStudent){
-        res.json({status:true,code:200,Student:updateStudent,message:"Student Updated Succcesfully"})
+        res.json({status:true,code:200,message:"Student Updated Succcesfully",Data:updateStudent})
       }else{
         res.json({status:false,code:200,message:"Student Not Updated "})
       }
@@ -209,7 +204,7 @@ router.get("/getStudentDetails/:id",jwtAuthMiddleware,async(req,res)=>
 
         ])
               if(student){
-                  res.json({status:true,code:200,Data:student,message:"Student Found Succcesfully"})
+                  res.json({status:true,code:200,message:"Student Found Succcesfully",Data:student})
               }else{
                   res.json({status:false,code:500,message:"Student Not Found"})
               }
