@@ -10,7 +10,7 @@ const { jwtAuthMiddleware, generateToken } = require("../../controllers/auth");
 
 
 
-router.post('/teachers/register', async (req, res) => {
+router.post('/register', async (req, res) => {
     try {
         const { Name, Email, PhoneNo, ClassId, SubjectIds } = req.body;
         const password = Math.random().toString(36).slice(-8);
@@ -39,7 +39,7 @@ router.post('/teachers/register', async (req, res) => {
 });
 
 
-router.post('/teachers/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
         const { Email, Password } = req.body;
         const teacher = await Teachermodel.findOne({ Email: Email });
@@ -61,7 +61,7 @@ router.post('/teachers/login', async (req, res) => {
 });
 
 
-router.get("/teachers/profile", jwtAuthMiddleware, async (req, res) => {
+router.get("/profile", jwtAuthMiddleware, async (req, res) => {
 
     try {
         const teacherId = req.user.id;
@@ -100,7 +100,7 @@ router.get("/getTeachers", jwtAuthMiddleware, async (req, res) => {
 })
 
 
-router.post("/teachers/update/:id", jwtAuthMiddleware, async (req, res) => {
+router.post("/update/:id", jwtAuthMiddleware, async (req, res) => {
 
     try {
         
@@ -118,7 +118,7 @@ router.post("/teachers/update/:id", jwtAuthMiddleware, async (req, res) => {
 })
 
 
-router.delete("/teachers/delete/:id", jwtAuthMiddleware, async (req, res) => {
+router.delete("/delete/:id", jwtAuthMiddleware, async (req, res) => {
 
     try {
         const deleteTeacher = await Teachermodel.findByIdAndDelete(req.params.id)

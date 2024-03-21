@@ -8,7 +8,7 @@ const Subjectmodel = require('../models/subject_schema');
 const {jwtAuthMiddleware,generateToken}=require("../../controllers/auth");
 
 
-router.post('/students/register', async (req, res) => {
+router.post('/register', async (req, res) => {
     try {
         const { Name, Email, PhoneNo, ClassId, SubjectIds } = req.body;
         const password = Math.random().toString(36).slice(-8);
@@ -36,7 +36,7 @@ router.post('/students/register', async (req, res) => {
 });
 
 
-router.post('/students/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
         const { Email, Password } = req.body;
         const student = await Studentmodel.findOne({ Email:Email});
@@ -58,47 +58,8 @@ router.post('/students/login', async (req, res) => {
 });
 
 
-router.post('/class', async (req, res) => {
-    try {
-        const {Class} =req.body;
-        const newClass= await Classmodel({
-            Class:Class
-        }).save();
 
-        if(newClass){
-            res.json({status:true,code:200,message: 'Class Created Successfully',Data:newClass});  
-        }else{
-            res.json({status:false,code:200, message: 'Subject Not Created '});
-        }
-
-    } catch (error) {
-        console.log(error);
-        res.json({status:false,code:500, message: 'Something Went Wrong'});
-    }
-});
-
-
-router.post('/subject', async (req, res) => {
-    try {
-        const {Subject } = req.body;
-        const newSubject = await Subjectmodel({
-            Subject: Subject
-        }).save();
-
-        if(newSubject){
-            res.json({status:true,code:200,Subject:Subject,message: 'Subject Created Successfully',Data:newSubject});
-        }else{
-            res.json({status:false,code:200, message: 'Subject Not Created '});
-        }
-      
-    } catch (error) {
-        console.log(error);
-        res.json({status:false,code:500, message: 'Something Went Wrong'});
-    }
-});
-
-
-router.get("/students/profile",jwtAuthMiddleware,async(req,res)=>
+router.get("/profile",jwtAuthMiddleware,async(req,res)=>
 {
 
     try{
@@ -135,7 +96,7 @@ router.get("/getStudents",jwtAuthMiddleware,async(req,res)=>
 
 
 
-router.post("/students/update/:id",jwtAuthMiddleware,async(req,res)=>{
+router.post("/update/:id",jwtAuthMiddleware,async(req,res)=>{
       
     try{
       const updateStudent=await Studentmodel.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true})
@@ -152,7 +113,7 @@ router.post("/students/update/:id",jwtAuthMiddleware,async(req,res)=>{
 })
 
 
-router.delete("/students/delete/:id",jwtAuthMiddleware,async(req,res)=>{
+router.delete("/delete/:id",jwtAuthMiddleware,async(req,res)=>{
 
     try{
         const deleteStudent=await Studentmodel.findByIdAndDelete(req.params.id)

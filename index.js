@@ -6,11 +6,14 @@ const db=require("./config/db")
 const bodyParser = require('body-parser');
 const studentRoutes = require('./app/src/students_routes');
 const teacherRoutes=require("./app/src/teachers_routes")
+const classRoutes=require("./app/src/classs_routes")
+const subjectRoutes=require("./app/src/subject_routes")
 app.use(bodyParser.json());
 app.use(express.json());
 
 
-app.use(studentRoutes,teacherRoutes);
+app.use("/students",studentRoutes)
+app.use("/teachers",teacherRoutes)
 
 app.listen(process.env.PORT,(req,res)=>{
     console.log("Listening to port " + process.env.PORT);
