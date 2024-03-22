@@ -19,16 +19,16 @@ router.post('/register', async (req, res) => {
                 SubjectIds
             }).save();
            if(student){
-            res.json({ status:true,code:200,message: 'Student Registered Successfully',Data:student});
+            res.json({ status:true,statusCode:200,message: 'Student Registered Successfully',Data:student});
            }else{
-            res.json({ status:false,code:200,message: 'Student Not Registered ' });
+            res.json({ status:false,statusCode:200,message: 'Student Not Registered ' });
            }
         
     } catch (error) {
         if(error.code===11000){
-            res.json({ status:false,code:500,message: 'Email Already Existed' });
+            res.json({ status:false,statusCode:500,message: 'Email Already Existed' });
         }else{
-            res.json({ status:false,code:500,message: 'Something Went Wrong' });
+            res.json({ status:false,statusCode:500,message: 'Something Went Wrong' });
         }
     }
 });
@@ -39,19 +39,19 @@ router.post('/login', async (req, res) => {
         const { Email, Password } = req.body;
         const student = await Studentmodel.findOne({ Email:Email});
         if (!student || (Password != student.Password)) {
-            return res.status(401).json({status:false,code:400, message: 'Invalid Email or Password ' })
+            return res.status(401).json({status:false,statusCode:400, message: 'Invalid Email or Password ' })
         }
         const payload={
             id:student.id,
         }
         const token= generateToken(payload)
         if(token){
-            res.json({status:true,code:200,message:"Student Login Succesfully",token:token });
+            res.json({status:true,statusCode:200,message:"Student Login Succesfully",token:token });
         }
        
     } catch (error) {
        console.log(error);
-       res.json({status:false,code:500, message: 'Something Went Wrong'});
+       res.json({status:false,statusCode:500, message: 'Something Went Wrong'});
     }
 });
 
@@ -65,12 +65,12 @@ router.get("/profile",jwtAuthMiddleware,async(req,res)=>
     
         const student=await Studentmodel.findById(studentId)
         if(student){
-            res.json({status:true,code:200,message:"Student Found Succcesfully",Data:student})
+            res.json({status:true,statusCode:200,message:"Student Found Succcesfully",Data:student})
         }
 
     }catch(error){
         console.log(error)
-        res.json({status:false,code:500,message:"Something Went Wrong"})
+        res.json({status:false,statusCode:500,message:"Something Went Wrong"})
     }
    
 })
@@ -82,12 +82,12 @@ router.get("/getStudents",jwtAuthMiddleware,async(req,res)=>
     try{
         const Students=await Studentmodel.find();
         if(Students){
-            res.json({status:true,code:200,message:"Students Found Succcesfully",Data:Students})
+            res.json({status:true,statusCode:200,message:"Students Found Succcesfully",Data:Students})
         }
 
     }catch(error){
         console.log(error)
-        res.json({status:false,code:500,message:"Something Went Wrong"})
+        res.json({status:false,statusCode:500,message:"Something Went Wrong"})
     }
    
 })
@@ -99,14 +99,14 @@ router.post("/update/:id",jwtAuthMiddleware,async(req,res)=>{
     try{
       const updateStudent=await Studentmodel.findByIdAndUpdate({_id:req.params.id},{$set:req.body},{new:true})
       if(updateStudent){
-        res.json({status:true,code:200,message:"Student Updated Succcesfully",Data:updateStudent})
+        res.json({status:true,statusCode:200,message:"Student Updated Succcesfully",Data:updateStudent})
       }else{
-        res.json({status:false,code:200,message:"Student Not Updated "})
+        res.json({status:false,statusCode:200,message:"Student Not Updated "})
       }
 
     }catch(error){
       console.log(error);
-      res.json({status:false,code:500,message:"Something Went Wrong"})
+      res.json({status:false,statusCode:500,message:"Something Went Wrong"})
     }      
 })
 
@@ -116,14 +116,14 @@ router.delete("/delete/:id",jwtAuthMiddleware,async(req,res)=>{
     try{
         const deleteStudent=await Studentmodel.findByIdAndDelete(req.params.id)
         if(deleteStudent){
-          res.json({status:true,code:200,message:"Student Deleted Succcesfully"})
+          res.json({status:true,statusCode:200,message:"Student Deleted Succcesfully"})
         }else{
-            res.json({status:false,code:200,message:"Studdent Not Deleted"}) 
+            res.json({status:false,statusCode:200,message:"Studdent Not Deleted"}) 
         }
 
     }catch(error){
         console.log(error)
-        res.json({status:false,code:500,message:"Something Went Wrong"})
+        res.json({status:false,statusCode:500,message:"Something Went Wrong"})
 
     }
    
@@ -163,14 +163,14 @@ router.get("/getStudentDetails/:id",jwtAuthMiddleware,async(req,res)=>
 
         ])
               if(student){
-                  res.json({status:true,code:200,message:"Student Found Succcesfully",Data:student})
+                  res.json({status:true,statusCode:200,message:"Student Found Succcesfully",Data:student})
               }else{
-                  res.json({status:false,code:500,message:"Student Not Found"})
+                  res.json({status:false,statusCode:500,message:"Student Not Found"})
               }
 
     }catch(error){
         console.log(error)
-        res.json({status:false,code:500,message:"Something Went Wrong"})
+        res.json({status:false,statusCode:500,message:"Something Went Wrong"})
     }
  
 

@@ -20,17 +20,17 @@ router.post('/register', async (req, res) => {
             SubjectIds
         }).save();
         if (teacher) {
-            res.json({ status: true, code: 200, message: 'Teacher Registered Successfully',Data:teacher});
+            res.json({ status: true, statusCode: 200, message: 'Teacher Registered Successfully',Data:teacher});
         } else {
-            res.json({ status: false, code: 200, message: 'Teacher Not Registered ' });
+            res.json({ status: false, statusCode: 200, message: 'Teacher Not Registered ' });
         }
 
     } catch (error) {
         if (error.code === 11000) {
-            res.json({ status: false, code: 500, message: 'Email Already Existed' });
+            res.json({ status: false, statusCode: 500, message: 'Email Already Existed' });
         } else {
             console.log(error);
-            res.json({ status: false, code: 500, message: 'Something Went Wrong' });
+            res.json({ status: false, statusCode: 500, message: 'Something Went Wrong' });
         }
     }
 });
@@ -41,19 +41,19 @@ router.post('/login', async (req, res) => {
         const { Email, Password } = req.body;
         const teacher = await Teachermodel.findOne({ Email: Email });
         if (!teacher || (Password != teacher.Password)) {
-            return res.status(401).json({ status: false, code: 400, message: 'Invalid Email or Password ' })
+            return res.status(401).json({ status: false, statusCode: 400, message: 'Invalid Email or Password ' })
         }
         const payload = {
             id: teacher.id
         }
         const token = generateToken(payload)
         if (token) {
-            res.json({ status: true, code: 200, message: "Teacher login Succesfully", token: token });
+            res.json({ status: true, statusCode: 200, message: "Teacher login Succesfully", token: token });
         }
 
     } catch (error) {
         console.log(error);
-        res.json({ status: false, code: 500, message: 'Something Went Wrong' });
+        res.json({ status: false, statusCode: 500, message: 'Something Went Wrong' });
     }
 });
 
@@ -65,14 +65,14 @@ router.get("/profile", jwtAuthMiddleware, async (req, res) => {
 
         const teacher = await Teachermodel.findById(teacherId)
         if (teacher) {
-            res.json({ status: true, code: 200, message: "Teacher Found Succcesfully",Data:teacher })
+            res.json({ status: true, statusCode: 200, message: "Teacher Found Succcesfully",Data:teacher })
         } else {
-            res.json({ status: false, code: 500, message: "Teacher Not Found " })
+            res.json({ status: false, statusCode: 500, message: "Teacher Not Found " })
         }
 
     } catch (error) {
         console.log(error)
-        res.json({ status: false, code: 500, message: "Something Went Wrong" })
+        res.json({ status: false, statusCode: 500, message: "Something Went Wrong" })
     }
 
 })
@@ -84,14 +84,14 @@ router.get("/getTeachers", jwtAuthMiddleware, async (req, res) => {
     try {
         const teachers = await Teachermodel.find()
         if (teachers) {
-            res.json({ status: true, code: 200, message: "Teachers Found Succcesfully" ,Data:teachers})
+            res.json({ status: true, statusCode: 200, message: "Teachers Found Succcesfully" ,Data:teachers})
         } else {
-            res.json({ status: false, code: 500, message: "Teacher Not Found " })
+            res.json({ status: false, statusCode: 500, message: "Teacher Not Found " })
         }
 
     } catch (error) {
         console.log(error)
-        res.json({ status: false, code: 500, message: "Something Went Wrong" })
+        res.json({ status: false, statusCode: 500, message: "Something Went Wrong" })
     }
 
 })
@@ -103,14 +103,14 @@ router.post("/update/:id", jwtAuthMiddleware, async (req, res) => {
         
         const updateTeacher = await Teachermodel.findByIdAndUpdate({_id:req.params.id}, { $set: req.body }, { new: true })
         if (updateTeacher) {
-            res.json({ status: true, code: 200, message: "Teacher Updated Succcesfully",Data:updateTeacher })
+            res.json({ status: true, statusCode: 200, message: "Teacher Updated Succcesfully",Data:updateTeacher })
         } else {
-            res.json({ status: false, code: 200, message: "Teacher Not Updated " })
+            res.json({ status: false, statusCode: 200, message: "Teacher Not Updated " })
         }
 
     } catch (error) {
         console.log(error);
-        res.json({ status: false, code: 500, message: "Something Went Wrong" })
+        res.json({ status: false, statusCode: 500, message: "Something Went Wrong" })
     }
 })
 
@@ -120,14 +120,14 @@ router.delete("/delete/:id", jwtAuthMiddleware, async (req, res) => {
     try {
         const deleteTeacher = await Teachermodel.findByIdAndDelete(req.params.id)
         if (deleteTeacher) {
-            res.json({ status: true, code: 200, message: "Teacher deleted Succcesfully" })
+            res.json({ status: true, statusCode: 200, message: "Teacher deleted Succcesfully" })
         } else {
-            res.json({ status: false, code: 200, message: "Teacher Not deleted " })
+            res.json({ status: false, statusCode: 200, message: "Teacher Not deleted " })
         }
 
     } catch (error) {
         console.log(error);
-        res.json({ status: false, code: 500, message: "Something Went Wrong" })
+        res.json({ status: false, statusCode: 500, message: "Something Went Wrong" })
     }
 })
 
@@ -172,14 +172,14 @@ router.get("/getTeacherDetails/:id", jwtAuthMiddleware, async (req, res) => {
 
         ])
         if (teacher) {
-            res.json({ status: true, code: 200, message: "Teacher Found Succcesfully",Data:teacher })
+            res.json({ status: true, statusCode: 200, message: "Teacher Found Succcesfully",Data:teacher })
         } else {
-            res.json({ status: false, code: 500, message: "Teacher Not Found" })
+            res.json({ status: false, statusCode: 500, message: "Teacher Not Found" })
         }
 
     } catch (error) {
         console.log(error)
-        res.json({ status: false, code: 500, message: "Something Went Wrong" })
+        res.json({ status: false, statusCode: 500, message: "Something Went Wrong" })
     }
 })
 
