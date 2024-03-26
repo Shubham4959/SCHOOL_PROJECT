@@ -21,6 +21,7 @@ const jwtAuthMiddleware=(req,res,next)=>
        }
     }
 
+
 const generateToken=(studentData)=>
 {
    return jwt.sign(studentData,process.env.SECRET_KEY,{expiresIn:'1h'});
