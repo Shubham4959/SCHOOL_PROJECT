@@ -172,9 +172,7 @@ router.get("/getStudentDetails/:id",jwtAuthMiddleware,async(req,res)=>
         console.log(error)
         res.json({status:false,statusCode:500,message:"Something Went Wrong"})
     }
- 
 
-    
 })
 
 module.exports = router;
